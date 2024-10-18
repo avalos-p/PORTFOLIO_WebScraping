@@ -76,11 +76,11 @@ class MilanunciosScraper:
             for pagina in range(1, number_of_pages+1):
                 random_delay()
                 if pagina == 1:
-                    print('Scraping page:', pagina)
+                    logger.info('Scraping page:', pagina)
                     self._scrape_elements(self,file_path)
                     self._next_page(self)
                 else:
-                    print('Scraping page:', pagina)
+                    logger.info('Scraping page:', pagina)
                     self._scroll_page(self, 1, 23)
                     self._scrape_elements(self,file_path)
                     self._next_page(self)
