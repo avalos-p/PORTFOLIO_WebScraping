@@ -33,5 +33,5 @@ The project uses a custom logging setup defined in `logger_setup.py`, which load
 To run the scraper:
 
 1. Ensure all dependencies are installed via requirements.txt.
-2. Run `main.py`:
+2. Run `main.py`
 
