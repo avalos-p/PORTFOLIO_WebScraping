@@ -48,7 +48,7 @@ CONCURRENT_REQUESTS = 5 ###
 CONCURRENT_REQUESTS_PER_IP = 15 #TROVIMAP
 
 # Disable cookies (enabled by default)
-# COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 TELNETCONSOLE_ENABLED = False ###
@@ -82,6 +82,9 @@ TELNETCONSOLE_ENABLED = False ###
 #ITEM_PIPELINES = {
 #    "Poject_scrapy.pipelines.PojectScrapyPipeline": 300,
 #}
+ITEM_PIPELINES = {
+    'Project_scrapy.pipelines.CleanDataPipeline': 1,  # Activar el pipeline de limpieza con prioridad 1
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -110,14 +113,10 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
 DOWNLOADER_MIDDLEWARES = {
-    # 'rotating_proxies.middlewares.RotatingProxyMiddleware': 900,#610,
-    # 'rotating_proxies.middlewares.BanDetectionMiddleware': 910,#620,
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None, # Disable default user-agent middleware
-    'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 600,#400, # Enable user-agent middleware
-    # 'scrapy_selenium.SeleniumMiddleware': 800 ###### selenium
-    # 'scrapy_selenium.MySeleniumMiddleware': 800 ###### selenium
-    # 'scrapy_cloudflare_middleware.middlewares.CloudFlareMiddleware': 560
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'scrapy_useragents.downloadermiddlewares.useragents.UserAgentsMiddleware': 500,
 }
+
 
 
 RETRY_TIMES = 3
@@ -134,3 +133,21 @@ LOG_FILE = 'logs/scrapy.log'
 
 RANDOMIZE_USER_AGENT = True
 DOWNLOAD_FAIL_ON_DATALOSS = False #####
+
+
+FEED_EXPORT_FIELDS = [
+    'titulo',
+    'precio',
+    'categoria',
+    'baños', 
+    'habitaciones', 
+    'area',
+    'link',
+    'operacion',
+    'provincia',
+    'municipio',
+    'teléfono',
+    'usuario',
+    'scraping_date'
+]
+ 

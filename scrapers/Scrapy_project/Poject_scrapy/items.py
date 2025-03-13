@@ -1,12 +1,16 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
 import scrapy
 
-
-class PojectScrapyItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class TicketItem(scrapy.Item):
+    titulo = scrapy.Field()
+    precio = scrapy.Field()
+    categoria = scrapy.Field()
+    baños = scrapy.Field()
+    habitaciones = scrapy.Field()
+    area = scrapy.Field()
+    link = scrapy.Field()
+    operacion = scrapy.Field()
+    provincia = scrapy.Field()
+    municipio = scrapy.Field()
+    teléfono = scrapy.Field()
+    usuario = scrapy.Field()
+    scraping_date = scrapy.Field()                     

@@ -1,6 +1,7 @@
 import scrapy
 import datetime
 import logging
+from Poject_scrapy.items import TicketItem
 
 date = datetime.datetime.now()
 
@@ -61,23 +62,24 @@ class SpideralquileresSpider_Trovimap(scrapy.Spider):
         anuncios = response.css('trovimap-virtual-grid .listing.view-3')
         for anuncio in anuncios:
             try:
-                yield{
-                        'titulo' : anuncio.css('h2.text-capitalize-first-letter ::text').get(),
-                        'precio' : anuncio.css('div.price h4::text').get(),
-                        'categoria' : anuncio.css('span.property-type ::text').get(),
-                        'baños' : anuncio.css('div.card__details span.trovimap-icon:nth-child(3)::text').get(),
-                        'habitaciones' : anuncio.css('div.card__details span.trovimap-icon:nth-child(2)::text').get(),
-                        'area(m2)' : anuncio.css('div.card__details span.trovimap-icon:nth-child(1)::text').get(),
-                        'link' : 'https://www.trovimap.com'+anuncio.css('a::attr(href)').get(),
-                        'operacion' : response.meta.get('operacion'),
-                        'provincia' : response.meta.get('municipio'),
-                        'municipio' : anuncio.css('h3::text').get(),
-                        'teléfono':None,
-                        'usuario' : anuncio.css('.property-spec ::text').get(),
-                        'scraping_date': date.strftime("%Y-%m-%d %H:%M:%S"),
-                    }
-            except:
-                pass
+                item = TicketItem()
+                item['titulo'] = anuncio.css('h2.text-capitalize-first-letter ::text').get()
+                item['precio'] = anuncio.css('div.price h4::text').get()
+                item['categoria'] = anuncio.css('span.property-type ::text').get()
+                item['baños'] = anuncio.css('div.card__details span.trovimap-icon:nth-child(3)::text').get()
+                item['habitaciones'] = anuncio.css('div.card__details span.trovimap-icon:nth-child(2)::text').get()
+                item['area'] = anuncio.css('div.card__details span.trovimap-icon:nth-child(1)::text').get()
+                item['link'] = 'https://www.trovimap.com'+anuncio.css('a::attr(href)').get()
+                item['operacion'] = response.meta.get('operacion')
+                item['provincia'] = response.meta.get('municipio')
+                item['municipio'] = anuncio.css('h3::text').get()
+                item['teléfono']  =None
+                item['usuario'] = anuncio.css('.property-spec ::text').get()
+                item['scraping_date']= date.strftime("%Y-%m-%d %H:%M:%S")
+                    
+                yield item
+            except Exception as e:
+                self.logger.error(f"Error procesando un ticket: {e}")
         next = response.css('li.pagination-next a::attr(href)').get()  # Get the link to the next page if it exists
         print(next)    # Print the link to the next page to see if it's actually moving
         if next:
