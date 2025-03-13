@@ -94,15 +94,14 @@ class MilanunciosScraper:
         start_time = time.time()
         logger.info('Scrolling page ...')
         while True:
-            self.driver.execute_script("window.scrollBy(0, 500);")  # Scroll down
+            self.driver.execute_script("window.scrollBy(0, 500);") 
             time.sleep(scroll_pause_time)  # Wait for the page to load
             elapsed_time = time.time() - start_time  #  Calculate elapsed time
-            if elapsed_time > limit_time:  # Exit the loop if the time limit is reached
+            if elapsed_time > limit_time: 
                 break
 
     def _next_page(self):
         try:
-            # boton_next = driver.find_elements(By.CSS_SELECTOR, '#app > div.ma-LayoutBasic > div.ma-AdvertisementPageLayout.ma-AdvertisementPageLayout-justify--center > div.ma-AdvertisementPageLayout-center > div.ma-LayoutFullHeight > div.ma-LayoutBasic-content.ma-Listing > div > main > nav > ul > li:nth-child(10) > button')
             boton_next = self.driver.find_elements(By.XPATH, '/html/body/div[2]/div[3]/div[3]/div[1]/div[2]/div[3]/div/main/nav/ul/li[last()]')
             boton_next[0].click()
         except Exception as e:

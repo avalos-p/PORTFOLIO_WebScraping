@@ -21,18 +21,14 @@ class SpideralquileresSpider_Trovimap(scrapy.Spider):
             "https://www.trovimap.com/",
         ]
 
-        for url in self.start_urls:  # Iterate through URLs (test)
+        for url in self.start_urls:  # Iterate through URLs
             print("Iniciando el Scrapeo de Trovimap.com")
             yield scrapy.Request(url=url, callback=self.parse)
         
 
     def parse(self, response):
-
-        # Logic to get links from the main page
-        print('inicia el parse')
+        
         avisos = response.css('.collapse-sitemap.home-sitemap__list a::attr(href)')
-        # Using links from the main page to get provinces and format
-        # Then modify in these two loops, one for sales and one for rentals
 
         for aviso in avisos:
             alquiler_texto = aviso.get()
@@ -57,8 +53,6 @@ class SpideralquileresSpider_Trovimap(scrapy.Spider):
                                                                                 'municipio': partes[-2]})
 
     def parse_paginas(self, response):
-
-        # At this point, get data from the listings themselves
         anuncios = response.css('trovimap-virtual-grid .listing.view-3')
         for anuncio in anuncios:
             try:
@@ -81,7 +75,7 @@ class SpideralquileresSpider_Trovimap(scrapy.Spider):
             except Exception as e:
                 self.logger.error(f"Error procesando un ticket: {e}")
         next = response.css('li.pagination-next a::attr(href)').get()  # Get the link to the next page if it exists
-        print(next)    # Print the link to the next page to see if it's actually moving
+        
         if next:
             yield scrapy.Request(url=next, callback=self.parse_paginas, meta=response.meta)  # If there's a next page, call the function again
 
